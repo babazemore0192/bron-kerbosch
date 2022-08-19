@@ -1,51 +1,8 @@
-# bron-kerbosch
+In computer science, the Bron–Kerbosch algorithm is an algorithm for finding maximal cliques in an undirected graph. 
+That is, it lists all subsets of vertices with the two properties that each pair of vertices in one of the listed subsets is connected by an edge, and no listed subset can have any additional vertices added to it while preserving its complete connectivity. 
 
-import sys, collections
+The Bron–Kerbosch algorithm was designed by Dutch scientists Joep Kerbosch and Coenraad Bron, who published a description of it in 1973. Although other algorithms for solving the clique problem have running times that are, in theory, better on inputs that have few maximal independent sets, the Bron–Kerbosch algorithm and subsequent improvements to it are frequently reported as being more efficient in practice than the alternatives.
 
-def bors_kerbosch_v1(R, P, X, G, C):
+It is well-known and widely used in application areas of graph algorithms such as computational chemistry.
 
-    if len(P) == 0 and len(X) == 0:
-        if len(R) > 2:
-            C.append(sorted(R))
-        return 
-    
-    for v in P.union(set([])):
-        bors_kerbosch_v1(R.union(set([v])), P.intersection(G[v]), X.intersection(G[v]), G, C)
-        P.remove(v)
-        X.add(v)
-
-def bors_kerbosch_v2(R, P, X, G, C):
-
-    if len(P) == 0 and len(X) == 0:
-        if len(R) > 2:
-            C.append(sorted(R))            
-        return
-
-    (d, pivot) = max([(len(G[v]), v) for v in P.union(X)])
-                     
-    for v in P.difference(G[pivot]):
-        bors_kerbosch_v2(R.union(set([v])), P.intersection(G[v]), X.intersection(G[v]), G, C)
-        P.remove(v)
-        X.add(v)
-        
-def test():
-    input = [('a', 'b'), ('b', 'a'), ('a', 'c'), ('c', 'a'), ('b', 'c'), ('c', 'b'), ('d', 'e'), ('e', 'd'), ('d', 'f'), ('f', 'd'), ('e', 'f'), ('f', 'e')]
-
-    G = collections.defaultdict(set) 
-    C1 = []
-    C2 = []
-    for (src,dest) in input:
-        G[src].add(dest)
-
-    bors_kerbosch_v1(set([]), set(G.keys()), set([]), G, C1)
-    bors_kerbosch_v2(set([]), set(G.keys()), set([]), G, C2)
-
-    for c in sorted(C1):
-        print ', '.join(c)
-
-    for c in sorted(C2):
-        print ', '.join(c)
-
-
-if __name__ == '__main__':
-    test()
+A contemporaneous algorithm of Akkoyunlu (1973), although presented in different terms, can be viewed as being the same as the Bron–Kerbosch algorithm, as it generates the same recursive search tree.
